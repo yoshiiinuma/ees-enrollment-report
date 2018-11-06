@@ -1,0 +1,7 @@
+{
+  "outputDir": "./output",
+  "archiveDir": "./archive",
+  "enableLog": false,
+  "logLevel": "error",
+  "logDir": "./logs"
+}

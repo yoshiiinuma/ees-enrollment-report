@@ -1,0 +1,40 @@
+{
+  "name": "ees-enrollment-report",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "exec": "babel-node src/index.js",
+    "build": "babel src --out-dir dist",
+    "watch": "webpack --watch",
+    "webpack-build": "webpack src/index.js dist/index.js",
+    "cover": "NODE_ENV=test babel-node ./node_modules/.bin/isparta cover _mocha",
+    "test": "NODE_ENV=test mocha --require @babel/register --require @babel/polyfill './test/**/*.{js,es6}' || exit 0"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "author": "Yoshiaki Iinuma",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/register": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "chai": "^4.2.0",
+    "isparta": "^4.1.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.2.0",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "dateformat": "^3.0.3",
+    "nodemailer": "^4.6.8"
+  }
+}
