@@ -20,7 +20,13 @@ export const readReport = (file) => {
     rl.on('line', (l) => {
       const matched = regex.exec(l);
       if (matched) {
-        const r = { id: matched[1], fname: matched[2], lname: matched[3] };
+        const r = {
+          key: matched[5] + matched[9].padStart(5, 0),
+          wd: matched[9],
+          org: matched[5],
+          firstName: matched[2],
+          lastName: matched[3]
+        };
         console.log(r);
       } else {
         Logger.debug('Parser#readReport: UNMATCHED: ' + l);

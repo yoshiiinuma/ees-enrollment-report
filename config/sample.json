@@ -1,6 +1,14 @@
 {
+  "smtp": {
+    "host": "localhost",
+    "port": 1025,
+    "auth": {
+      "user": "email@example.com",
+      "pass": "password"
+    },
+    "secure": false
+  },
   "outputDir": "./output",
-  "archiveDir": "./archive",
   "enableLog": false,
   "logLevel": "error",
   "logDir": "./logs"
