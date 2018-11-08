@@ -45,7 +45,8 @@ describe('mailer#generateMail', () => {
       to: 'bar@example.com, baz@example.com',
       subject: 'Email Subject',
       text: "Sample Email Title\n\nSample email body.\n",
-      html: "<h1>Sample Email Title</h1>\n\n<p>Sample email body.</p>\n",
+      html: "<html><body>\n<h1>Sample Email Title</h1>\n\n<p>Sample email body.</p>\n</body></html>\n",
+
       attachments: [{
         filename: 'filename.csv',
         content: csv
