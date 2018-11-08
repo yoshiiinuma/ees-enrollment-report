@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 import { parse } from '../src/parser.js';
 
-const infile = './test/report.rtf';
+const infile = './test/not-enrolled-list.rtf';
 const badfile = 'not-exist';
 
 describe('parser#parse', () => {
