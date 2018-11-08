@@ -8,6 +8,14 @@
     },
     "secure": false
   },
+  "mail": {
+    "from": "\"Fred Foo\" <foo@example.com>",
+    "to": "bar@example.com, baz@example.com",
+    "subject": "Email Subject",
+    "text": "./templates/sample.txt",
+    "html": "./templates/sample.html",
+    "attachment": "filename.csv"
+  },
   "outputDir": "./output",
   "enableLog": false,
   "logLevel": "error",

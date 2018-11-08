@@ -43,6 +43,6 @@ if (opt.env != 'development' && opt.env != 'production') {
 let arg = App.initApp(opt);
 console.log(util.inspect(arg));
 //App.testEmail();
-//App.testEmailByEthereal();
-App.sendNotifications('./test/not-enrolled-list.rtf', './test/address-list.csv');
+App.testEmailByEthereal();
+//App.sendNotifications('./test/not-enrolled-list.rtf', './test/address-list.csv');
 

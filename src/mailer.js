@@ -1,79 +1,69 @@
 
+import fs from 'fs';
 import nodemailer from 'nodemailer'
 
-export const sendMail = (opts) => {
-  const smtp = nodemailer.createTransport(opts.smtpConf);
+import { generateCsv } from './report.js';
 
-  smtp.sendMail(opts.mail, (err, info) => {
-    if (err) {
-      console.log(err);
-      return; 
-    }
-
-    console.log('Message sent: %s', info.messageId);
-    console.log(info);
-  });
-};
-
-export const sendMailToEthreal = (opts) => {
-  nodemailer.createTestAccount((err, account) => {
-    let smtp = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: account.user,
-        pass: account.pass
-      }
+export const generateMail = (people, opt) => {
+  return generateCsv(people)
+    .then((csv) => {
+      return {
+        from: opt.from,
+        to: opt.to,
+        subject: opt.subject,
+        text: fs.readFileSync(opt.text).toString(),
+        html: fs.readFileSync(opt.html).toString(),
+        attachments: [ {
+          filename: opt.attachment,
+          content: csv
+        }]
+      };
     });
-
-    smtp.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log(err);
-        return; 
-      }
-      console.log('Message sent: %s', info.messageId);
-      console.log('Preview URL: sent: %s', nodemailer.getTestMessageUrl(info));
-    });
-  });
-
 }
 
-const getMailer = () => {
-  nodemailer.createTestAccount((err, account) => {
-    let transporter = nodemailer.createTransport({
-      host: 'smtp.ethreal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: account.user,
-        pass: account.pass
-      }
-    });
+export const sendMail = (opts) => {
+  return new Promise((resolve, reject) => {
+    const smtp = nodemailer.createTransport(opts.smtpConf);
 
-    let mailOptions = {
-      from: '"Fred Foo" <foo@example.com>',
-      to: 'bar@example.com, baz@example.com',
-      subject: 'Hello Test',
-      text: 'Hello world?',
-      html: '<h1>Hello world?</h1>'
-    };
-
-    transporter.sendMail(mailOptions, (err, info) => {
+    smtp.sendMail(opts.mail, (err, info) => {
       if (err) {
-        console.log(err);
-        return; 
+        return reject(err);
       }
+      return resolve(info);
+    });
+  });
+};
+
+export const createEtherealConf = () => {
+  return new Promise((resolve, reject) => {
+    nodemailer.createTestAccount((err, account) => {
+      if (err) {
+        console.log('Cannot Create Ethereal Test Account');
+        throw err;
+      }
+      return resolve({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        secure: false,
+        auth: {
+          user: account.user,
+          pass: account.pass
+        }
+      });
+    });
+  });
+};
+
+export const sendMailToEthereal = (mail) => {
+  return createEtherealConf()
+    .then((smtpConf) => {
+      return sendMail({ mail, smtpConf})
+    })
+    .then((info) => {
       console.log('Message sent: %s', info.messageId);
       console.log('Preview URL: sent: %s', nodemailer.getTestMessageUrl(info));
     });
-  });
-
-  return {
-
-  };
 };
-
 
 
 

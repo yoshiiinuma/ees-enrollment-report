@@ -2,8 +2,9 @@
 import nodemailer from 'nodemailer'
 import fs from 'fs';
 import Logger from './logger.js';
-import { sendMail } from './mailer.js';
+import { sendMail, sendMailToEthereal } from './mailer.js';
 import { parse } from './parser.js';
+import { generateCsv } from './report.js';
 import { genAddressList } from './address-list.js';
 
 const App = {};
@@ -70,7 +71,6 @@ App.testEmail = () => {
   ];
   const makeCsv = (accum, cur) => accum + "\n" + cur.firstName + ',' + cur.lastName;
   let csv = users.reduce(makeCsv, 'FirstName,LastName');
-  console.log(csv);
 
   let mail = {
     from: '"Fred Foo" <foo@example.com>',
@@ -95,41 +95,21 @@ App.testEmailByEthereal = () => {
     { firstName: 'Ggggg', lastName: 'Hhhhh' },
     { firstName: 'Iiiii', lastName: 'Jjjjj' },
   ];
-  const makeCsv = (accum, cur) => accum + "\n" + cur.firstName + ',' + cur.lastName;
-  let csv = users.reduce(makeCsv, 'FirstName,LastName');
-
-  let mail = {
-    from: '"Fred Foo" <foo@example.com>',
-    to: 'bar@example.com, baz@example.com',
-    subject: 'Hello Test',
-    text: 'Hello world?',
-    html: '<h1>Hello world?</h1>',
-    attachments: [ {
-      filename: 'HawaiiPay_NotEnrolledList.csv',
-      content: csv
-    }]
-  };
-
-  nodemailer.createTestAccount((err, account) => {
-    let smtp = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: account.user,
-        pass: account.pass
-      }
+  generateCsv(users)
+    .then((csv) => {
+      let mail = {
+        from: '"Fred Foo" <foo@example.com>',
+        to: 'bar@example.com, baz@example.com',
+        subject: 'Hello Test',
+        text: 'Hello world?',
+        html: '<h1>Hello world?</h1>',
+        attachments: [ {
+          filename: 'HawaiiPay_NotEnrolledList.csv',
+          content: csv
+        }]
+      };
+      sendMailToEthereal(mail);
     });
-
-    smtp.sendMail(mail, (err, info) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log('Message sent: %s', info.messageId);
-      console.log('Preview URL: sent: %s', nodemailer.getTestMessageUrl(info));
-    });
-  });
 };
 
 App.sendNotifications = (notEnrolledList, addressList) => {
@@ -139,11 +119,15 @@ App.sendNotifications = (notEnrolledList, addressList) => {
   genAddressList(addressList)
     .then((list) => {
       addrs = list;
-      console.log(addrs);
       parse(notEnrolledList);
     })
     .then((list) => {
       people = list;
+    })
+    .then(() => {
+      console.log(addrs);
+    })
+    .then(() => {
       console.log(people);
     })
     .catch((e) => console.log(e));
