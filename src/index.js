@@ -2,10 +2,6 @@
 import fs from 'fs';
 import util from 'util';
 import App from './app.js';
-import Logger from './logger.js';
-import { sendMail } from './mailer.js';
-import { readReport } from './parser.js';
-import { genAddressList } from './address-list.js';
 
 const usage = () => {
   console.log("\n Usage: npm run exec -- [OPTIONS]");
