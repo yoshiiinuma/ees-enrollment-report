@@ -4,6 +4,10 @@ import nodemailer from 'nodemailer'
 
 import { generateCsv } from './report.js';
 
+/**
+ * data: return value from parser#parse
+ * address: return value from address-list#genAddressList
+ */
 export const bulkSend = (data, address) => {
 }
 

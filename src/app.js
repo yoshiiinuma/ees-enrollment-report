@@ -57,7 +57,7 @@ const setUncaughtExceptionHandler = () => {
   });
 };
 
-App.testEmail = () => {
+App.testEmail = (opt) => {
   let smtpConf = {
     host: 'localhost',
     port: 1025,
@@ -74,19 +74,7 @@ App.testEmail = () => {
   const makeCsv = (accum, cur) => accum + "\n" + cur.firstName + ',' + cur.lastName;
   let csv = users.reduce(makeCsv, 'FirstName,LastName');
 
-  let mail = {
-    from: '"Fred Foo" <foo@example.com>',
-    to: 'bar@example.com, baz@example.com',
-    subject: 'Hello Test',
-    text: 'Hello world?',
-    html: '<h1>Hello world?</h1>',
-    attachments: [ {
-      filename: 'HawaiiPay_NotEnrolledList.csv',
-      content: csv
-    }]
-  };
-
-  sendMail({ mail, smtpConf });
+  return generateMail(users, opt).then((mail) => sendMail({ mail, smtpConf }));
 }
 
 App.testEmailByEthereal = (opt) => {
@@ -98,23 +86,26 @@ App.testEmailByEthereal = (opt) => {
     { firstName: 'Iiiii', lastName: 'Jjjjj' },
   ];
   console.log(util.inspect(opt));
-  generateMail(users, opt).then((mail) => sendMailToEthereal(mail));
+  return generateMail(users, opt).then((mail) => sendMailToEthereal(mail));
 };
 
 App.sendNotifications = (notEnrolledList, addressList) => {
   let addrs;
   let people;
 
-  genAddressList(addressList)
+  return genAddressList(addressList)
     .then((list) => {
       addrs = list;
-      parse(notEnrolledList);
+      return parse(notEnrolledList);
     })
     .then((list) => {
       people = list;
     })
     .then(() => {
       console.log(addrs);
+    })
+    .then(() => {
+      console.log(people);
     })
     .then(() => {
       console.log(people);
