@@ -4,6 +4,9 @@ import nodemailer from 'nodemailer'
 
 import { generateCsv } from './report.js';
 
+export const bulkSend = (data, address) => {
+}
+
 export const generateMail = (people, opt) => {
   return generateCsv(people)
     .then((csv) => {
@@ -64,6 +67,4 @@ export const sendMailToEthereal = (mail) => {
       console.log('Preview URL: sent: %s', nodemailer.getTestMessageUrl(info));
     });
 };
-
-
 
