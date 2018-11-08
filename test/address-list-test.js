@@ -54,7 +54,7 @@ describe('#genAddressList', () => {
   });
 
   context('with a non-existent file', function() {
-    it('causes an Exception', function(done) {
+    it('throws an exception', function(done) {
       genAddressList(badfile)
         .catch((e) => {
           expect(e).to.equal('File Not Found: ' + badfile);
