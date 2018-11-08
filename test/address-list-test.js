@@ -7,7 +7,7 @@ import { genAddressList } from '../src/address-list.js';
 const infile = './test/address-list.csv';
 const badfile = 'not-exist';
 
-describe('#genAddressList', () => {
+describe('address-list#genAddressList', () => {
   context('with a valid file', () => {
     it('converts csv file into address list object', (done) => {
       genAddressList(infile)
