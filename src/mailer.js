@@ -32,7 +32,7 @@ export const sendMail = (opts) => {
       if (err) {
         return reject(err);
       }
-      return resolve(info);
+      resolve(info);
     });
   });
 };
@@ -44,7 +44,7 @@ export const createEtherealConf = () => {
         console.log('Cannot Create Ethereal Test Account');
         throw err;
       }
-      return resolve({
+      resolve({
         host: 'smtp.ethereal.email',
         port: 587,
         secure: false,

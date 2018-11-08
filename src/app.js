@@ -1,8 +1,10 @@
 
 import nodemailer from 'nodemailer'
 import fs from 'fs';
+import util from 'util';
+
 import Logger from './logger.js';
-import { sendMail, sendMailToEthereal } from './mailer.js';
+import { sendMail, sendMailToEthereal, generateMail } from './mailer.js';
 import { parse } from './parser.js';
 import { generateCsv } from './report.js';
 import { genAddressList } from './address-list.js';
@@ -87,7 +89,7 @@ App.testEmail = () => {
   sendMail({ mail, smtpConf });
 }
 
-App.testEmailByEthereal = () => {
+App.testEmailByEthereal = (opt) => {
   let users = [
     { firstName: 'Aaaaa', lastName: 'Bbbbb' },
     { firstName: 'Ccccc', lastName: 'Ddddd' },
@@ -95,21 +97,8 @@ App.testEmailByEthereal = () => {
     { firstName: 'Ggggg', lastName: 'Hhhhh' },
     { firstName: 'Iiiii', lastName: 'Jjjjj' },
   ];
-  generateCsv(users)
-    .then((csv) => {
-      let mail = {
-        from: '"Fred Foo" <foo@example.com>',
-        to: 'bar@example.com, baz@example.com',
-        subject: 'Hello Test',
-        text: 'Hello world?',
-        html: '<h1>Hello world?</h1>',
-        attachments: [ {
-          filename: 'HawaiiPay_NotEnrolledList.csv',
-          content: csv
-        }]
-      };
-      sendMailToEthereal(mail);
-    });
+  console.log(util.inspect(opt));
+  generateMail(users, opt).then((mail) => sendMailToEthereal(mail));
 };
 
 App.sendNotifications = (notEnrolledList, addressList) => {
