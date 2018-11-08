@@ -1,5 +1,4 @@
 
-import util from 'util';
 import { expect } from 'chai';
 
 import { genAddressList } from '../src/address-list.js';

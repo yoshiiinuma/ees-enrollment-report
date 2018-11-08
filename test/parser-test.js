@@ -1,5 +1,4 @@
 
-//import util from 'util';
 import { expect } from 'chai';
 
 import { parse } from '../src/parser.js';
@@ -12,7 +11,6 @@ describe('parser#parse', () => {
     it('parses report and retuns report object', (done) => {
       parse(infile)
         .then((res) => {
-          //console.log(util.inspect(res));
           expect(res).to.eql({
             DOE00002: [
                { firstName: 'Zyxid', lastName: 'Abck', org: 'DOE', wd: '002' },
