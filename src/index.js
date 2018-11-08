@@ -1,5 +1,6 @@
 
 import fs from 'fs';
+import util from 'util';
 import App from './app.js';
 import Logger from './logger.js';
 import { sendMail } from './mailer.js';
@@ -42,4 +43,10 @@ if (opt.env != 'development' && opt.env != 'production') {
   exitProgram(" Invalid Environment: " + opt.env);
 }
 
+
+let arg = App.initApp(opt);
+console.log(util.inspect(arg));
+//App.testEmail();
+//App.testEmailByEthereal();
+App.sendNotifications('./test/not-enrolled-list.rtf', './test/address-list.csv');
 
