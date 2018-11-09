@@ -25,6 +25,11 @@ export const printPeople = (people) => {
   });
 };
 
+/**
+ * rslts: { total: 0, err: 0, sent: 0, totalUsers: 0, sentUsers: 0, errUsers: 0, data: [] }
+ *  data: [ { key, size, people: [{ firstName, lastName, org, wd }] } ]
+ *
+ **/
 export const printResults = (rslts) => {
   console.log("\n [ Results ]\n");
   rslts.data.forEach( (r) => {
@@ -34,6 +39,7 @@ export const printResults = (rslts) => {
       console.log(r.key.padStart(9, ' ') + ': ' + r.size.toString().padStart(5, ' ') + ' NOT ENROLLED; SENT TO: ' + r.to)
     }
   });
-  console.log("\n Total: " + rslts.total + ', Sent: ' + rslts.sent + ', Error: ' + rslts.err + "\n");
+  console.log("\n Total: " + rslts.total + ', Sent: ' + rslts.sent + ', Error: ' + rslts.err +
+  "\n TotalUsers: " + rslts.totalUsers + ', SentUsers: ' + rslts.sentUsers + ', ErrorUsers: ' + rslts.errUsers + "\n");
 };
 
