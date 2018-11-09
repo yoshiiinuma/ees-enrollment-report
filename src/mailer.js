@@ -30,8 +30,8 @@ export const bulkSend = (data, address, mailOpts, smtpOpts, opts) => {
   return new Promise((resolve, reject) => {
     return Object.entries(data).reduce((promise, [key, people]) => {
       if (!address[key] || !address[key].emails) {
+        Logger.error('Mailer#bulkSend:  No Address Found with Key ' + key);
         console.log('ERROR: No Email Address Found ' + key);
-        Logger.error('Mailer#bulkSend: No Address Found with Key ' + key);
         return promise.then(() => Promise.resolve());
       }
       const emails = address[key].emails;
@@ -68,26 +68,24 @@ export const sendCsvTo = (people, mailOpts, smtpOpts, opts, key) => {
     handler = sendMailToEthereal;
   }
   return generateMail(people, mailOpts)
-    //.then((mail) => sendMailToEthereal(mail));
     .then((mail) => {
-      console.log('SENDING START ' + key + ' TOTAL ' + people.length)
       Logger.info('Mailer#sendCsvTo: START ' + key + ' TOTAL ' + people.length)
+      console.log('SENDING START ' + key + ' TOTAL ' + people.length)
+      if (opts.display) {
+        console.log('---< ' + key + ' >--------------------------------------');
+        console.log(mail);
+        people.forEach((h) => {
+          console.log(key + ' ' + h.firstName.padStart(20, ' ') + ', ' + h.lastName.padStart(20, ' '));
+        });
+      }
       return mail;
     })
-    .then((mail) => handler(mail, smtpOpts, key, people))
+    .then((mail) => handler(mail, smtpOpts, key))
     .then((info) => {
-      console.log('SENDING END   ' + key + ' TOTAL ' + people.length);
       Logger.info('Mailer#sendCsvTo: END   ' + key + ' TOTAL ' + people.length);
+      console.log('SENDING END   ' + key + ' TOTAL ' + people.length);
       return info;
     });
-};
-
-export const dryHandler = (mail, smtpConf, key, people) => {
-  console.log('---< ' + key + ' >--------------------------------------');
-  console.log(mail.to);
-  console.log(util.inspect(people));
-  console.log(mail);
-  return key;
 };
 
 export const generateMail = (people, opt) => {
@@ -106,6 +104,8 @@ export const generateMail = (people, opt) => {
       };
     });
 }
+
+export const dryHandler = (mail, smtpConf, key) => { return Promise.resolve(key); };
 
 export const sendMail = (mail, smtpConf) => {
   return new Promise((resolve, reject) => {

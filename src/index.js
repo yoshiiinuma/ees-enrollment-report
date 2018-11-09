@@ -12,9 +12,11 @@ const usage = () => {
   console.log();
   console.log("   OPTIONS");
   console.log("     -e or --env:     development|production DEFAULT development");
+  console.log("     --run:           run the program, send emails");
+  console.log("     --dry:           run the program without sending emails");
+  console.log("     --display:       display emails");
   console.log("     --ethereal:      use Ethereal as SMTP server; preferred to --dry & --run");
-  console.log("     --run:           send emails if specified");
-  console.log("     --dry:           NOT send emails if specified; DEFAULT");
+  console.log("     --conf:          just show configuration, not run the program; DEFAULT");
   console.log("     -h or --help:    show this message");
   console.log();
 };
@@ -27,7 +29,7 @@ const exitProgram = (msg) => {
 
 let opt = {
   env: 'development',
-  app: { dry: true }
+  app: { showconf: true }
 };
 
 let args = process.argv.slice(2);
@@ -53,10 +55,10 @@ while(args.length > 0) {
     opt.env = args.shift();
   } else if (arg === '--run') {
     opt.app.run = true;
-    opt.app.dry = false;
   } else if (arg === '--dry') {
-    opt.app.run = false;
     opt.app.dry = true;
+  } else if (arg === '--display') {
+    opt.app.display = true;
   } else if (arg === '--ethereal') {
     opt.app.ethereal = true;
   } else {
@@ -66,17 +68,30 @@ while(args.length > 0) {
 
 if (opt.app.dry) {
   opt.app.run = false;
+  opt.app.showconf = false;
+}
+if (opt.app.run) {
+  opt.app.showconf = false;
+} else {
+  opt.app.dry = true;
 }
 if (opt.app.ethereal) {
   opt.app.dry = false;
+  opt.app.showconf = false;
 }
+
 if (!App.checkEnv(opt)) {
   exitProgram(" Invalid Environment: " + opt.env);
 }
 
-
 let arg = App.initApp(opt);
-console.log(util.inspect(arg));
+if (opt.app.showconf) {
+  console.log(util.inspect(arg));
+  console.log();
+  console.log('You must specify --run or --dry or --ethereal to run the program');
+  console.log();
+  process.exit();
+}
 
 App.sendNotifications(dataFile, addressFile, arg);
 
