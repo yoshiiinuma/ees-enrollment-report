@@ -1,6 +1,7 @@
 
 import nodemailer from 'nodemailer'
 import fs from 'fs';
+import util from 'util';
 
 import Logger from './logger.js';
 import { bulkSend } from './mailer.js';
@@ -73,6 +74,9 @@ App.sendNotifications = (notEnrolledList, addressList, opts) => {
     })
     .then(() => {
       return bulkSend(people, addrs, opts.mail, opts.smtp, opts.app);
+    })
+    .then((r) => {
+      console.log(util.inspect(r));
     })
     .catch((e) => console.log(e));
 
