@@ -61,38 +61,6 @@ const setUncaughtExceptionHandler = () => {
   });
 };
 
-App.testEmail = (opt) => {
-  let smtpConf = {
-    host: 'localhost',
-    port: 1025,
-    secure: false
-  };
-
-  let users = [
-    { firstName: 'Aaaaa', lastName: 'Bbbbb' },
-    { firstName: 'Ccccc', lastName: 'Ddddd' },
-    { firstName: 'Eeeee', lastName: 'Fffff' },
-    { firstName: 'Ggggg', lastName: 'Hhhhh' },
-    { firstName: 'Iiiii', lastName: 'Jjjjj' },
-  ];
-  const makeCsv = (accum, cur) => accum + "\n" + cur.firstName + ',' + cur.lastName;
-  let csv = users.reduce(makeCsv, 'FirstName,LastName');
-
-  return generateMail(users, opt).then((mail) => sendMail(mail, smtpConf));
-}
-
-App.testEmailByEthereal = (opt) => {
-  let users = [
-    { firstName: 'Aaaaa', lastName: 'Bbbbb' },
-    { firstName: 'Ccccc', lastName: 'Ddddd' },
-    { firstName: 'Eeeee', lastName: 'Fffff' },
-    { firstName: 'Ggggg', lastName: 'Hhhhh' },
-    { firstName: 'Iiiii', lastName: 'Jjjjj' },
-  ];
-  console.log(util.inspect(opt));
-  return generateMail(users, opt).then((mail) => sendMailToEthereal(mail));
-};
-
 App.sendNotifications = (notEnrolledList, addressList, opts) => {
   let addrs;
   let people;
