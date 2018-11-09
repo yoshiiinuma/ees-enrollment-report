@@ -3,7 +3,7 @@ import fs from 'fs';
 import nodemailer from 'nodemailer'
 import util from 'util';
 
-import { generateCsv } from './report.js';
+import { generateCsv, printPeople } from './report.js';
 import Logger from './logger.js';
 
 /**
@@ -72,11 +72,11 @@ export const sendCsvTo = (people, mailOpts, smtpOpts, opts, key) => {
       Logger.info('Mailer#sendCsvTo: START ' + key + ' TOTAL ' + people.length)
       console.log('SENDING START ' + key + ' TOTAL ' + people.length)
       if (opts.display) {
-        console.log('---< ' + key + ' >--------------------------------------');
+        console.log('---< ' + key + ' >------------------------------------------');
         console.log(mail);
-        people.forEach((h) => {
-          console.log(key + ' ' + h.firstName.padStart(20, ' ') + ', ' + h.lastName.padStart(20, ' '));
-        });
+        console.log('--------------------------------------------------------');
+        printPeople(people);
+        console.log('--------------------------------------------------------');
       }
       return mail;
     })
