@@ -26,12 +26,12 @@ import Logger from './logger.js';
  *
  */
 export const bulkSend = (data, address, mailOpts, smtpOpts, opts) => {
-  let results = { total: 0, err: 0, sent: 0, data: {} };
+  let results = { total: 0, err: 0, sent: 0, data: [] };
 
   return new Promise((resolve, reject) => {
     Object.entries(data).reduce((promise, [key, people]) => {
       if (!address[key] || !address[key].emails) {
-        results.data[key] = { error: 'No Address Found', key, people, size: people.length };
+        results.data.push({ error: 'No Address Found', key, people, size: people.length });
         results.total += people.length;
         results.err += people.length;
         Logger.error('Mailer#bulkSend:  No Address Found with Key ' + key);
@@ -41,7 +41,7 @@ export const bulkSend = (data, address, mailOpts, smtpOpts, opts) => {
       const emails = address[key].emails;
       const subject = mailOpts.subject + ' - ' + address[key].org + address[key].wd.padStart(3, '0');
       const to = { to: emails.join(', '), subject  };
-      results.data[key] = { key, people, size: people.length, to: emails.join(', ') };
+      results.data.push({ key, people, size: people.length, to: emails.join(', ') });
       results.total += people.length;
       results.sent += people.length;
 

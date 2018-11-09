@@ -6,6 +6,7 @@ import util from 'util';
 import Logger from './logger.js';
 import { bulkSend } from './mailer.js';
 import { parse } from './parser.js';
+import { printResults } from './report.js';
 import { genAddressList } from './address-list.js';
 
 const App = {};
@@ -75,9 +76,7 @@ App.sendNotifications = (notEnrolledList, addressList, opts) => {
     .then(() => {
       return bulkSend(people, addrs, opts.mail, opts.smtp, opts.app);
     })
-    .then((r) => {
-      console.log(util.inspect(r));
-    })
+    .then((r) => printResults(r))
     .catch((e) => console.log(e));
 
 };
