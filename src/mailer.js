@@ -1,7 +1,6 @@
 
 import fs from 'fs';
 import nodemailer from 'nodemailer'
-import util from 'util';
 
 import { generateCsv, printPeople } from './report.js';
 import Logger from './logger.js';
@@ -60,13 +59,8 @@ export const bulkSend = (data, address, mailOpts, smtpOpts, opts) => {
  *     ethereal: send emails to ethereal if true
  */
 export const sendCsvTo = (people, mailOpts, smtpOpts, opts, key) => {
-  let handler = dryHandler;
-  if (opts.run) {
-    handler = sendMail;
-  }
-  if (opts.ethereal) {
-    handler = sendMailToEthereal;
-  }
+  const handler = selectMailHandler(opts);
+
   return generateMail(people, mailOpts)
     .then((mail) => {
       Logger.info('Mailer#sendCsvTo: START ' + key + ' TOTAL ' + people.length)
@@ -86,6 +80,17 @@ export const sendCsvTo = (people, mailOpts, smtpOpts, opts, key) => {
       console.log('SENDING END   ' + key + ' TOTAL ' + people.length);
       return info;
     });
+};
+
+const selectMailHandler = (opts) => {
+  let handler = dryHandler;
+  if (opts.run) {
+    handler = sendMail;
+  }
+  if (opts.ethereal) {
+    handler = sendMailToEthereal;
+  }
+  return handler;
 };
 
 export const generateMail = (people, opt) => {
@@ -120,6 +125,18 @@ export const sendMail = (mail, smtpConf) => {
   });
 };
 
+export const sendMailToEthereal = (mail) => {
+  return createEtherealConf()
+    .then((smtpConf) => {
+      return sendMail(mail, smtpConf);
+    })
+    .then((info) => {
+      console.log('Message sent: %s', info.messageId);
+      console.log('Preview URL: sent: %s', nodemailer.getTestMessageUrl(info));
+      return info;
+    });
+};
+
 export const createEtherealConf = () => {
   return new Promise((resolve, reject) => {
     nodemailer.createTestAccount((err, account) => {
@@ -138,17 +155,5 @@ export const createEtherealConf = () => {
       });
     });
   });
-};
-
-export const sendMailToEthereal = (mail) => {
-  return createEtherealConf()
-    .then((smtpConf) => {
-      return sendMail(mail, smtpConf)
-    })
-    .then((info) => {
-      console.log('Message sent: %s', info.messageId);
-      console.log('Preview URL: sent: %s', nodemailer.getTestMessageUrl(info));
-      return info;
-    });
 };
 
