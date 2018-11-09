@@ -35,7 +35,8 @@ export const bulkSend = (data, address, mailOpts, smtpOpts, opts) => {
         return promise.then(() => Promise.resolve());
       }
       const emails = address[key].emails;
-      const to = { to: emails.join(', ') };
+      const subject = mailOpts.subject + ' - ' + address[key].org + address[key].wd.padStart(3, '0');
+      const to = { to: emails.join(', '), subject  };
       return promise.then(() => sendCsvTo(people, { ...mailOpts, ...to }, smtpOpts, opts, key));
     }, Promise.resolve());
   });
