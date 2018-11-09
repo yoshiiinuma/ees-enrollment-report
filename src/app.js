@@ -4,7 +4,7 @@ import fs from 'fs';
 import util from 'util';
 
 import Logger from './logger.js';
-import { sendMail, sendMailToEthereal, generateMail } from './mailer.js';
+import { sendMail, sendMailToEthereal, generateMail, bulkSend } from './mailer.js';
 import { parse } from './parser.js';
 import { generateCsv } from './report.js';
 import { genAddressList } from './address-list.js';
@@ -41,6 +41,10 @@ App.jsonToObject = (file) => {
   return JSON.parse(fs.readFileSync(file));
 };
 
+App.checkEnv = (arg) => {
+  return fs.existsSync(App.config(arg));
+}
+
 const setUncaughtExceptionHandler = () => {
   process.on('uncaughtException', (err) => {
     Logger.fatal('########################################################################');
@@ -74,7 +78,7 @@ App.testEmail = (opt) => {
   const makeCsv = (accum, cur) => accum + "\n" + cur.firstName + ',' + cur.lastName;
   let csv = users.reduce(makeCsv, 'FirstName,LastName');
 
-  return generateMail(users, opt).then((mail) => sendMail({ mail, smtpConf }));
+  return generateMail(users, opt).then((mail) => sendMail(mail, smtpConf));
 }
 
 App.testEmailByEthereal = (opt) => {
@@ -89,7 +93,7 @@ App.testEmailByEthereal = (opt) => {
   return generateMail(users, opt).then((mail) => sendMailToEthereal(mail));
 };
 
-App.sendNotifications = (notEnrolledList, addressList) => {
+App.sendNotifications = (notEnrolledList, addressList, opts) => {
   let addrs;
   let people;
 
@@ -102,13 +106,7 @@ App.sendNotifications = (notEnrolledList, addressList) => {
       people = list;
     })
     .then(() => {
-      console.log(addrs);
-    })
-    .then(() => {
-      console.log(people);
-    })
-    .then(() => {
-      console.log(people);
+      return bulkSend(people, addrs, opts.mail, opts.smtp, opts.app);
     })
     .catch((e) => console.log(e));
 
