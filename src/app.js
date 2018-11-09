@@ -3,9 +3,8 @@ import nodemailer from 'nodemailer'
 import fs from 'fs';
 
 import Logger from './logger.js';
-import { sendMail, sendMailToEthereal, generateMail, bulkSend } from './mailer.js';
+import { bulkSend } from './mailer.js';
 import { parse } from './parser.js';
-import { generateCsv } from './report.js';
 import { genAddressList } from './address-list.js';
 
 const App = {};
