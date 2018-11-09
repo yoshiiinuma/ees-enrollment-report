@@ -1,7 +1,6 @@
 
 import nodemailer from 'nodemailer'
 import fs from 'fs';
-import util from 'util';
 
 import Logger from './logger.js';
 import { sendMail, sendMailToEthereal, generateMail, bulkSend } from './mailer.js';
