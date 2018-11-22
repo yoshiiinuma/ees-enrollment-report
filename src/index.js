@@ -11,7 +11,7 @@ const usage = () => {
   console.log("   ADDRESSBOOK:     path to address book file; expect CSV file");
   console.log();
   console.log("   OPTIONS");
-  console.log("     -e or --env:     development|production DEFAULT development");
+  console.log("     -e or --env:     development|production|test DEFAULT development");
   console.log("     --run:           run the program, send emails");
   console.log("     --dry:           run the program without sending emails");
   console.log("     --display:       display emails");
