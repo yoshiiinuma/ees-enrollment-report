@@ -2,6 +2,7 @@
 import nodemailer from 'nodemailer'
 import fs from 'fs';
 import util from 'util';
+import path from 'path';
 
 import Logger from './logger.js';
 import { bulkSend } from './mailer.js';
@@ -25,7 +26,7 @@ App.initApp = (opt) => {
  * arg: { env }
  */
 App.config = (arg) => {
-  return './config/' + arg.env + '.json';
+  return path.dirname(__dirname) + '/config/' + arg.env + '.json';
 };
 
 /**
@@ -42,6 +43,7 @@ App.jsonToObject = (file) => {
 };
 
 App.checkEnv = (arg) => {
+  console.log(App.config(arg));
   return fs.existsSync(App.config(arg));
 }
 
