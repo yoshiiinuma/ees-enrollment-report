@@ -41,7 +41,8 @@ export const bulkSend = (data, address, mailOpts, smtpOpts, opts) => {
         return promise.then(() => Promise.resolve(results));
       }
       const emails = address[key].emails;
-      const subject = mailOpts.subject + ' - ' + address[key].org + address[key].wd.padStart(3, '0');
+      //const subject = mailOpts.subject + ' - ' + address[key].org + address[key].wd.padStart(3, '0');
+      const subject = mailOpts.subject + ' - ' + address[key].wd.padStart(3, '0');
       const to = { to: emails.join(', '), subject  };
       results.data.push({ key, people, size: people.length, to: emails.join(', ') });
       results.totalUsers += people.length;
