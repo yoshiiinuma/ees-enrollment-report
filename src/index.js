@@ -61,6 +61,8 @@ while(args.length > 0) {
     opt.app.display = true;
   } else if (arg === '--ethereal') {
     opt.app.ethereal = true;
+  } else if (arg === '--conf') {
+    opt.app.showconf = true;
   } else {
     exitProgram('Invalid Argument: ' + arg);
   }
