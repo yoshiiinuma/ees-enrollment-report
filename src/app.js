@@ -29,12 +29,21 @@ App.config = (arg) => {
   return path.dirname(__dirname) + '/config/' + arg.env + '.json';
 };
 
+const r2a = (filePath) => {
+  let temp = path.dirname(__dirname) + '/' + filePath;
+  console.log(path.resolve(path.dirname(__dirname) + '/' + filePath));
+  return path.resolve(temp);
+};
+
 /**
  * arg: { env }
  */
 App.loadConfig = (arg) => {
   let confFile = App.config(arg);
-  return App.jsonToObject(confFile);
+  let conf = App.jsonToObject(confFile);
+  conf.mail.text = r2a(conf.mail.text);
+  conf.mail.html = r2a(conf.mail.html);
+  return conf;
 };
 
 App.jsonToObject = (file) => {

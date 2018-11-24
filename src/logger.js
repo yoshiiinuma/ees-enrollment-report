@@ -1,6 +1,7 @@
 
 import fs from 'fs';
 import util from 'util';
+import path from 'path';
 import dateFormat from 'dateformat';
 
 const Logger = {};
@@ -65,7 +66,11 @@ Logger.disable = () => {
   switchToStdout();
 }
 
-Logger.setLogFile = (filePath) => { logFile = filePath; }
+Logger.setLogFile = (filePath) => {
+  const relPath = path.dirname(__dirname) + '/' + filePath;
+  const absPath = path.resolve(relPath);
+  logFile = path.resolve(absPath);
+}
 
 Logger.showStatus = () => {
   console.log(' Log Enabled: ' + logEnabled);
