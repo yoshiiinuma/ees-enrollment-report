@@ -10,6 +10,8 @@ param (
 $pg = 'dev-check-conf.ps1'
 $Modes = @('dry', 'run', 'ethereal')
 $Envs = @('dev', 'prod', 'test')
+#$OFS = "`r`n"
+$EOL = [Environment]::NewLIne
 
 function usage {
   Write-Host '============================================================'
@@ -27,13 +29,13 @@ $script = $base + '\dist\index.js'
 
 if ([string]::IsNullOrEmpty($data)) {
   #$data = $base + '\test\not-enrolled-list.rtf'
-  Write-Host 'Error: No Data Specified'
+  Write-Host $EOL 'Error: No Data Specified' $EOL
   usage
   exit
 }
 
 if (-not (Test-Path $data)) {
-  Write-Host 'Error: File Not Found:' $data
+  Write-Host $EOL 'Error: File Not Found:' $data $EOL
   usage
   exit
 }
@@ -45,11 +47,11 @@ if ([string]::IsNullOrEmpty($address)) {
 }
 
 if ([string]::IsNullOrEmpty($mode)) {
-  Write-Host 'Error: Mode Not Specified'
+  Write-Host $EOL 'Error: Mode Not Specified' $EOL
   usage
   exit
 } elseif (-not ($Modes -contains $mode)) {
-  Write-Host 'Error: Invalid Mode:' $mode
+  Write-Host $EOL 'Error: Invalid Mode:' $mode $EOL
   usage
   exit
 }
@@ -62,7 +64,7 @@ if ([string]::IsNullOrEmpty($env)) {
   $env = 'production'
 } elseif ($env -eq 'test') {
 } else {
-  Write-Host 'Error: Unspoorted ENV:' $env;
+  Write-Host $EOL 'Error: Unspoorted ENV:' $env $EOL
   usage
   exit
 }
