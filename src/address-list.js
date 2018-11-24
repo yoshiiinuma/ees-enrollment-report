@@ -1,5 +1,6 @@
 
 import fs from 'fs';
+import util from 'util';
 import readline from 'readline';
 import Logger from './logger.js';
 
@@ -58,3 +59,17 @@ export const genAddressList = (file) => {
     });
   });
 };
+
+export const getEmailToCodeMap = (list) => {
+  return new Promise((resolve, reject) => {
+    let map = {};
+    for(let key in list) {
+      const val = list[key];
+      const emails = val.emails.join();
+      //console.log(key + ' ### ' + util.inspect(emails));
+      map[emails] = { org: val.org, wd: val.wd };
+    }
+    resolve(map);
+  });
+};
+

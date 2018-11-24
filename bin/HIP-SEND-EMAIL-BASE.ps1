@@ -10,7 +10,6 @@ param (
 $pg = 'dev-check-conf.ps1'
 $Modes = @('dry', 'run', 'ethereal')
 $Envs = @('dev', 'prod', 'test')
-#$OFS = "`r`n"
 $EOL = [Environment]::NewLIne
 
 function usage {
