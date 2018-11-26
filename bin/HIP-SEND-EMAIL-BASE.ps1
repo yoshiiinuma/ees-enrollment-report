@@ -7,7 +7,7 @@ param (
   [bool]$debug = 0
 )
 
-$pg = 'dev-check-conf.ps1'
+$pg = 'HIP-SEND-EMAIL-BASE.ps1'
 $Modes = @('dry', 'run', 'ethereal')
 $Envs = @('dev', 'prod', 'test')
 $EOL = [Environment]::NewLIne
