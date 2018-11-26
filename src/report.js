@@ -5,21 +5,21 @@
  **/
 export const generateCsv = (data) => {
   return new Promise((resolve, reject) => {
-    const header = 'FirstName,LastName';
+    const header = 'FirstName,LastName,PayrollId';
     const csv = data.reduce((accum, i) => {
-      return accum + "\n" + i.firstName + ',' + i.lastName;
+      return accum + "\n" + i.firstName + ',' + i.lastName + ',' + i.payrollId;
     }, header);
     return resolve(csv);
   });
 };
 
 /**
- * people: [ { firstName, lastName, org, wd } ]
+ * people: [ { firstName, lastName, org, wd, payrollId } ]
  *
  **/
 export const printPeople = (people) => {
   people.forEach((h) => {
-    console.log(h.org + h.wd.padStart(5, '0') + ' ' +
+    console.log(h.org + h.wd.padStart(5, '0') + ' ' + h.payrollId.padStart(2, ' ') + ' ' +
       h.firstName.padStart(20, ' ') + ', ' +
       h.lastName.padStart(20, ' '));
   });

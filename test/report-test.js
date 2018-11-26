@@ -56,10 +56,10 @@ const data = {
 describe('report#generateCsv', () => {
   context('with multiple records', () => {
     const data1 = [
-     { firstName: 'Aaaaa', lastName: 'Bbbbb', org: 'DOE', wd: '002' },
-     { firstName: 'Ccccc', lastName: 'Ddddd', org: 'DOE', wd: '002' },
-     { firstName: 'Eeeee', lastName: 'Fffff', org: 'DOE', wd: '002' } ];
-    const exp1 = "FirstName,LastName\nAaaaa,Bbbbb\nCcccc,Ddddd\nEeeee,Fffff";
+     { firstName: 'Aaaaa', lastName: 'Bbbbb', payrollId: '01', org: 'DOE', wd: '002' },
+     { firstName: 'Ccccc', lastName: 'Ddddd', payrollId: '02', org: 'DOE', wd: '002' },
+     { firstName: 'Eeeee', lastName: 'Fffff', payrollId: '03', org: 'DOE', wd: '002' } ];
+    const exp1 = "FirstName,LastName,PayrollId\nAaaaa,Bbbbb,01\nCcccc,Ddddd,02\nEeeee,Fffff,03";
 
     it('generates csv', (done) => {
       generateCsv(data1)
@@ -75,8 +75,8 @@ describe('report#generateCsv', () => {
   });
 
   context('with a single record', () => {
-    const data2 = [{ firstName: 'Aaaaa', lastName: 'Bbbbb', org: 'DOE', wd: '002' }];
-    const exp2 = "FirstName,LastName\nAaaaa,Bbbbb";
+    const data2 = [{ firstName: 'Aaaaa', lastName: 'Bbbbb', payrollId: '01', org: 'DOE', wd: '002' }];
+    const exp2 = "FirstName,LastName,PayrollId\nAaaaa,Bbbbb,01";
 
     it('generates csv', (done) => {
       generateCsv(data2)
@@ -93,7 +93,7 @@ describe('report#generateCsv', () => {
 
   context('with no records', () => {
     const data3 = [];
-    const exp3 = "FirstName,LastName";
+    const exp3 = "FirstName,LastName,PayrollId";
 
     it('generates csv', (done) => {
       generateCsv(data3)

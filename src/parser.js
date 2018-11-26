@@ -31,6 +31,7 @@ export const parse = (file) => {
         const r = {
           firstName: matched[2],
           lastName: matched[3],
+          payrollId: matched[8].trim(),
           org: matched[5],
           wd: matched[9]
         };

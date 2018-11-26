@@ -1,12 +1,18 @@
 
+param (
+  [string]$mode,
+  [bool]$debug = 0
+)
+
 $pg = 'HIP-SEND-EMAIL-DEV.ps1'
 $EOL = [Environment]::NewLIne
+$Modes = @('dry', 'run', 'ethereal')
 
 function usage {
   Write-Host '============================================================'
-  Write-Host ' USAGE: ' $pg ' -data <PATH-TO-DATA> -mode <MODE> [-env <ENV>] [-address <PATH-TO-ADDRESSBOOK>]'
+  Write-Host ' USAGE: ' $pg ' -mode <MODE>'
   Write-Host ''
-  Write-Host '   PATH-TO-DATA:        list of employees that are not enrolled yet; MUST be in rich text fomat (.rtf)'
+  Write-Host '   MODE:                {run|dry}'
   Write-Host '============================================================'
 }
 
@@ -28,13 +34,22 @@ if (-not (Test-Path $address)) {
   exit
 }
 
+if ([string]::IsNullOrEmpty($mode)) {
+  $mode = 'dry'
+} elseif (-not ($Modes -contains $mode)) {
+  Write-Host $EOL 'Error: Invalid Mode:' $mode $EOL
+  usage
+  exit
+}
 
 function showParams {
   Write-Host '--------------------------------'
   Write-Host $data
   Write-Host $address
+  Write-Host $mode
   Write-Host '--------------------------------'
 }
 
-HIP-SEND-EMAIL-BASE.ps1 -data $data -address $address -mode run -env test
+showParams
+HIP-SEND-EMAIL-BASE.ps1 -data $data -address $address -mode $mode -env test
 

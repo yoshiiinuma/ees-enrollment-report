@@ -58,5 +58,5 @@ function showParams {
 }
 
 showParams
-#HIP-SEND-EMAIL-BASE.ps1 -data $data -address $address -mode $mode -env production
+HIP-SEND-EMAIL-BASE.ps1 -data $data -address $address -mode $mode -env production
 

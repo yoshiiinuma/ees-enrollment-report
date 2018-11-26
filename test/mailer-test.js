@@ -28,10 +28,10 @@ describe('Mailer#sendMail', () => {
 describe('mailer#generateMail', () => {
   context('with multiple records', () => {
     const people = [
-     { firstName: 'Aaaaa', lastName: 'Bbbbb', org: 'DOE', wd: '002' },
-     { firstName: 'Ccccc', lastName: 'Ddddd', org: 'DOE', wd: '002' },
-     { firstName: 'Eeeee', lastName: 'Fffff', org: 'DOE', wd: '002' } ];
-    const csv = "FirstName,LastName\nAaaaa,Bbbbb\nCcccc,Ddddd\nEeeee,Fffff";
+     { firstName: 'Aaaaa', lastName: 'Bbbbb', payrollId: '01', org: 'DOE', wd: '002' },
+     { firstName: 'Ccccc', lastName: 'Ddddd', payrollId: '02', org: 'DOE', wd: '002' },
+     { firstName: 'Eeeee', lastName: 'Fffff', payrollId: '03', org: 'DOE', wd: '002' } ];
+    const csv = "FirstName,LastName,PayrollId\nAaaaa,Bbbbb,01\nCcccc,Ddddd,02\nEeeee,Fffff,03";
     const opt = {
       from: '"Fred Foo" <foo@example.com>',
       to: 'bar@example.com, baz@example.com',
