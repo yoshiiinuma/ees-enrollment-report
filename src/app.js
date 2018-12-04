@@ -6,7 +6,8 @@ import path from 'path';
 
 import Logger from './logger.js';
 import { bulkSend } from './mailer.js';
-import { parse } from './parser.js';
+//import { parse } from './parser.js';
+import { parse } from './csv-parser.js';
 import { printResults } from './report.js';
 import { genAddressList } from './address-list.js';
 
