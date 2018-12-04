@@ -28,8 +28,6 @@
     "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.4",
     "chai": "^4.2.0",
-    "isparta": "^4.1.0",
-    "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
     "sinon": "^7.1.1",
     "webpack": "^4.25.1",
