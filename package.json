@@ -7,6 +7,7 @@
     "exec": "babel-node src/index.js",
     "build": "babel src --out-dir dist",
     "data": "babel-node create-test-data.js",
+    "amend": "babel-node fix-doe-addressbook.js",
     "webpack-build": "webpack src/index.js dist/index.js",
     "cover": "NODE_ENV=test babel-node ./node_modules/.bin/isparta cover _mocha",
     "test": "NODE_ENV=test mocha --require @babel/register --require @babel/polyfill './test/**/*.{js,es6}' || exit 0"
