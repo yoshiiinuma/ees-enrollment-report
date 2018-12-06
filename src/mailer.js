@@ -32,6 +32,39 @@ const sleep = (ms) => {
 export const bulkSend = (data, address, mailOpts, smtpOpts, opts) => {
   let results = { total: 0, err: 0, sent: 0, totalUsers: 0, sentUsers: 0, errUsers: 0, data: [] };
 
+  return new Promise(async (resolve, reject) => {
+    for (let key in data) {
+      let people = data[key];
+      if (!address[key] || !address[key].emails) {
+        results.data.push({ error: 'No Address Found', key, people, size: people.length });
+        results.totalUsers += people.length;
+        results.errUsers += people.length;
+        results.total += 1;
+        results.err += 1;
+        Logger.error('Mailer#bulkSend:  No Address Found with Key ' + key);
+        console.log('ERROR: No Email Address Found ' + key);
+      } else {
+        const emails = address[key].emails;
+        //const subject = mailOpts.subject + ' - ' + address[key].org + address[key].wd.padStart(3, '0');
+        const subject = mailOpts.subject + ' - ' + address[key].wd.padStart(3, '0');
+        const to = { to: emails.join(', '), subject  };
+        results.data.push({ key, people, size: people.length, to: emails.join(', ') });
+        results.totalUsers += people.length;
+        results.sentUsers += people.length;
+        results.total += 1;
+        results.sent += 1;
+
+        await sleep(1000);
+        await sendCsvTo(people, { ...mailOpts, ...to }, smtpOpts, opts, key);
+      }
+    }
+    return resolve(results);
+  });
+};
+
+export const bulkSendAsync = (data, address, mailOpts, smtpOpts, opts) => {
+  let results = { total: 0, err: 0, sent: 0, totalUsers: 0, sentUsers: 0, errUsers: 0, data: [] };
+
   return new Promise((resolve, reject) => {
     Object.entries(data).reduce(async (promise, [key, people]) => {
       if (!address[key] || !address[key].emails) {
@@ -54,7 +87,7 @@ export const bulkSend = (data, address, mailOpts, smtpOpts, opts) => {
       results.total += 1;
       results.sent += 1;
 
-      await sleep(1000);
+      await sleep(5000);
       return promise.then(() => sendCsvTo(people, { ...mailOpts, ...to }, smtpOpts, opts, key));
     }, Promise.resolve()).then(() => resolve(results));
   });
@@ -98,6 +131,11 @@ export const sendCsvTo = (people, mailOpts, smtpOpts, opts, key) => {
       Logger.info('Mailer#sendCsvTo: END   ' + key + ' TOTAL ' + people.length);
       console.log('SENDING END   ' + key + ' TOTAL ' + people.length);
       return info;
+    })
+    .catch((err) => {
+      Logger.error('SendCsvTo');
+      Logger.error(err);
+      return err;
     });
 };
 
