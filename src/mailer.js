@@ -1,6 +1,6 @@
 
 import fs from 'fs';
-import nodemailer from 'nodemailer'
+import nodemailer from 'nodemailer';
 
 import { generateCsv, printPeople } from './report.js';
 import Logger from './logger.js';
@@ -29,11 +29,11 @@ const sleep = (ms) => {
  *     ethereal: send emails to ethereal if true
  *
  */
-export const bulkSend = async (data, address, mailOpts, smtpOpts, opts) => {
+export const bulkSend = (data, address, mailOpts, smtpOpts, opts) => {
   let results = { total: 0, err: 0, sent: 0, totalUsers: 0, sentUsers: 0, errUsers: 0, data: [] };
 
   return new Promise((resolve, reject) => {
-    Object.entries(data).reduce((promise, [key, people]) => {
+    Object.entries(data).reduce(async (promise, [key, people]) => {
       if (!address[key] || !address[key].emails) {
         results.data.push({ error: 'No Address Found', key, people, size: people.length });
         results.totalUsers += people.length;
