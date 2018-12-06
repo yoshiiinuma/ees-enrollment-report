@@ -5,6 +5,10 @@ import nodemailer from 'nodemailer'
 import { generateCsv, printPeople } from './report.js';
 import Logger from './logger.js';
 
+const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 /**
  * data: return value from parser#parse; { key: [ { firstName, lastName, org, wd } ] }
  * address: return value from address-list#genAddressList; { key: { org, wd, emails } }
@@ -25,7 +29,7 @@ import Logger from './logger.js';
  *     ethereal: send emails to ethereal if true
  *
  */
-export const bulkSend = (data, address, mailOpts, smtpOpts, opts) => {
+export const bulkSend = async (data, address, mailOpts, smtpOpts, opts) => {
   let results = { total: 0, err: 0, sent: 0, totalUsers: 0, sentUsers: 0, errUsers: 0, data: [] };
 
   return new Promise((resolve, reject) => {
@@ -50,6 +54,7 @@ export const bulkSend = (data, address, mailOpts, smtpOpts, opts) => {
       results.total += 1;
       results.sent += 1;
 
+      await sleep(1000);
       return promise.then(() => sendCsvTo(people, { ...mailOpts, ...to }, smtpOpts, opts, key));
     }, Promise.resolve()).then(() => resolve(results));
   });
