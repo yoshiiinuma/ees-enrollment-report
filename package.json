@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "check": "babel-node check-deliver.js",
     "exec": "babel-node src/index.js",
     "build": "babel src --out-dir dist",
     "data": "babel-node create-test-data.js",
