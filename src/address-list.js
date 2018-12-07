@@ -4,7 +4,7 @@ import util from 'util';
 import readline from 'readline';
 import Logger from './logger.js';
 
-const regexCsv =/^(\w+),(\d+),(("[^"]+")|([^,]+)),/;
+const regexCsv =/^(\w+),(\d+),(("[^"]+")|([^,]+))/;
 const regexWd = /^\d+$/;
 const regexSc = /; */;
 
