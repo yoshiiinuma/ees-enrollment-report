@@ -133,7 +133,7 @@ export const sendCsvTo = (people, mailOpts, smtpOpts, opts, key) => {
       return info;
     })
     .catch((err) => {
-      Logger.error('SendCsvTo');
+      Logger.error('SendCsvTo ' + key);
       Logger.error(err);
       return err;
     });
