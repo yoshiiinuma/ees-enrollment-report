@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "check": "babel-node check-deliver.js",
+    "select": "babel-node select-not-delivered.js",
     "exec": "babel-node src/index.js",
     "build": "babel src --out-dir dist --plugins @babel/plugin-transform-runtime",
     "data": "babel-node create-test-data.js",

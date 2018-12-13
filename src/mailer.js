@@ -54,7 +54,7 @@ export const bulkSend = (data, address, mailOpts, smtpOpts, opts) => {
         results.total += 1;
         results.sent += 1;
 
-        await sleep(1000);
+        await sleep(2000);
         await sendCsvTo(people, { ...mailOpts, ...to }, smtpOpts, opts, key);
       }
     }
