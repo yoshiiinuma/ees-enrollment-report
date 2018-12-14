@@ -73,3 +73,16 @@ export const getEmailToCodeMap = (list) => {
   });
 };
 
+export const getEmailToOrgMap = (list) => {
+  return new Promise((resolve, reject) => {
+    let map = {};
+    for(let key in list) {
+      const val = list[key];
+      val.emails.forEach((e) => {
+        map[e.toLowerCase()] = val.org;
+      });
+    }
+    resolve(map);
+  });
+};
+
